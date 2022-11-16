@@ -1,0 +1,23 @@
+<div class="form-group row mt-0 mb-0">
+  <label class="col-md-3 col-form-label">申請人</label>
+  <p class="col-md-8 form-control-plaintext">{{ data.cname }}</p>
+</div>
+<div class="form-group row mt-0 mb-0">
+  <label class="col-md-3 col-form-label">假別</label>
+  <p class="col-md-8 form-control-plaintext">{{ data.leaveType | code: types }}</p>
+</div>
+<div class="form-group row mt-0 mb-0">
+  <label class="col-md-3 col-form-label">日期</label>
+  <p class="col-md-8 form-control-plaintext">
+    {{ data.startDate | taiwanDate: 'tYY/MM/DD HH:mm' }} ~ {{ data.endDate | taiwanDate: 'tYY/MM/DD
+    HH:mm' }}
+  </p>
+</div>
+<div class="form-group row mt-0 mb-0">
+  <label class="col-md-3 col-form-label">時數</label>
+  <p class="col-md-8 form-control-plaintext">{{ data.hours | leaveDays }}</p>
+</div>
+<div class="form-group row mt-0">
+  <label class="col-md-3 col-form-label">事由</label>
+  <p class="col-md-8 form-control-plaintext">{{ data.reason }}</p>
+</div>

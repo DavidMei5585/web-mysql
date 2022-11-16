@@ -1,0 +1,59 @@
+<div class="card">
+  <div class="card-body card-toolbar">
+    <button type="button" class="btn btn-sm btn-primary" (click)="confirm('01')">通過</button>
+    <button type="button" class="btn btn-sm btn-default ml-2" (click)="confirm('02')">退回</button>
+    <button type="button" class="btn btn-sm btn-danger ml-2" (click)="confirm('03')">退件</button>
+  </div>
+
+  <div class="card-body">
+    <ngx-table
+      #table
+      (event)="eventEmitted($event)"
+      [configuration]="configuration"
+      [data]="list"
+      [columns]="columns"
+    >
+      <ng-template let-row let-index="index">
+        <td>
+          <label class="ngx-form-checkbox">
+            <input type="checkbox" [checked]="row.checked" (change)="row.checked=!row.checked" />
+            <em class="ngx-form-icon custom-checkbox-color"></em>
+          </label>
+        </td>
+        <td>
+          <a href="javascript:;" class="text-primary" (click)="openModal(template, row)">
+            {{ row.flowId }}
+          </a>
+        </td>
+        <td>
+          <a href="javascript:;" class="text-success" (click)="openModal(templateFlow, row)">
+            {{ row.flowType | code: typeCodes }}
+          </a>
+        </td>
+        <td>{{ row.deptCode | code: deptCodes }}</td>
+        <td>{{ row.titleCode }} {{ row.userCname }}</td>
+        <td>{{ row.sentDate | taiwanDate: 'tYY/MM/DD HH:mm:ss' }}</td>
+        <td>{{ row.summary }}</td>
+        <td>{{ row.status | code: statusCodes }}</td>
+      </ng-template>
+    </ngx-table>
+  </div>
+</div>
+
+<ng-template #template>
+  <app-flow-detail
+    [todo]="todo"
+    [typeCodes]="typeCodes"
+    [deptCodes]="deptCodes"
+    [actionCodes]="actionCodes"
+    (hide)="modalRef.hide()"
+  ></app-flow-detail>
+</ng-template>
+
+<ng-template #templateFlow>
+  <app-flow-stage
+    [flowId]="todo.flowId"
+    [step]="todo.step"
+    (hide)="modalRef.hide()"
+  ></app-flow-stage>
+</ng-template>

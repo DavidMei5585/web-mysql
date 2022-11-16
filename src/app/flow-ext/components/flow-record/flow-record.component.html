@@ -1,0 +1,36 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">簽核記錄</h4>
+    <button type="button" class="close" aria-hidden="true" (click)="hideModal()">&times;</button>
+  </div>
+  <div class="modal-body p-0">
+    <table class="table table-border table-striped table-hover table-sm text-nowrap">
+      <thead>
+        <tr>
+          <th class="w-30">人員</th>
+          <th class="w-10">動作</th>
+          <th class="w-10">時間</th>
+          <th class="w-50">意見</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of records$ | async">
+          <td>{{ d.deptCode | code: deptCodes }} {{ d.cname }}</td>
+          <td>{{ d.action | code: actionCodes }}</td>
+          <td>{{ d.signDate | taiwanDate: 'tYY/MM/DD HH:mm:ss' }}</td>
+          <td>{{ d.opinion }}</td>
+        </tr>
+        <tr>
+          <td>
+            <div *ngFor="let d of current$ | async">
+              {{ d.deptCode | code: deptCodes }} {{ d.cname }}
+            </div>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

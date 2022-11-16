@@ -1,0 +1,50 @@
+<div class="card">
+  <div class="card-body" [formGroup]="form">
+    <div class="form-group row">
+      <label for="userId" class="col-md-4 col-form-label text-md-right">員工編號</label>
+      <div class="col-md-6">
+        <p class="form-control-plaintext">{{ form.controls.userId.value }}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="name" class="col-md-4 col-form-label text-md-right">英文姓名</label>
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          [ngClass]="f.name.invalid | inputInvalid: submit"
+        />
+        <div class="invalid-feedback">此欄位必填</div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="cname" class="col-md-4 col-form-label text-md-right">中文姓名</label>
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="cname"
+          [ngClass]="f.cname.invalid | inputInvalid: submit"
+        />
+        <div class="invalid-feedback">此欄位必填</div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-md-4 col-form-label text-md-right">電子郵件</label>
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="email"
+          [ngClass]="f.email.invalid | inputInvalid: submit"
+        />
+        <div class="invalid-feedback">此欄位必填</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer text-right">
+    <button type="button" class="btn btn-sm btn-primary" (click)="confirm()">確認</button>
+  </div>
+</div>

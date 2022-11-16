@@ -1,0 +1,13 @@
+# 使用 3.4 版的設定檔
+version: '3.4'
+
+# 定義 service 的區塊，一個 service 設定可以用來啟動多個 container
+services:
+  # 定義一個叫 web 的 service
+  web:
+    image: angular-nginx
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 4200:80

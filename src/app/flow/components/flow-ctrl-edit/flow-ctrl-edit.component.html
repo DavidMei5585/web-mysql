@@ -1,0 +1,183 @@
+<div class="card">
+  <div class="card-header">編輯流程</div>
+  <div class="card-body pb-0">
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <label for="email" class="col-md-3 col-form-label text-md-right">流程名稱</label>
+        <div class="col-md-5">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="typeName"
+            [value]="form.get('type').value | code:typeCodes"
+            [ngClass]="f.typeName.invalid | inputInvalid: submit"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <hr />
+  <div class="card-body pt-0">
+    <div class="pt-2 pb-2">
+      <button
+        class="btn btn-sm btn-secondary mr-2"
+        [disabled]="!this.selectedItem || this.selectedItem.code==='00'"
+        type="button"
+        (click)="openModal(returnTemplate, true)"
+      >
+        指定退回
+      </button>
+      <button
+        class="btn btn-sm btn-danger mr-2"
+        [disabled]="!this.selectedItem || this.selectedItem.code==='00'"
+        type="button"
+        (click)="delItem()"
+      >
+        刪除關卡
+      </button>
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        [disabled]="!this.selectedItem"
+        type="button"
+        (click)="openModal(template)"
+      >
+        新增關卡
+      </button>
+    </div>
+
+    <!-- flow -->
+    <div
+      class="flow-container"
+      cdkDropList
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div
+        *ngFor="let item of items; let i = index"
+        [ngClass]="item.selected?'card flow-card flow-card-selected':'card flow-card'"
+        [id]="item.id"
+        cdkDrag
+        [cdkDragDisabled]="item.code==='00'"
+        (click)="selectItem(item)"
+      >
+        <ng-template
+          *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: item }"
+        ></ng-template>
+      </div>
+    </div>
+
+    <ng-template #recursiveListTmpl let-item>
+      <div class="flow-icon shadow px-2 py-1">
+        <em class="fas fa-user fa-2x text-info"></em>
+      </div>
+      <div class="card-body mt-3 text-center">
+        <div class="card-text text-nowrap">
+          {{ item.code | code: stageCodes }}<br />
+          <small>{{ item.flag | code: flagCodes }}</small>
+        </div>
+      </div>
+
+      <div
+        [ngClass]="item.type"
+        *ngIf="item.data!==null"
+        cdkDropList
+        cdkDropListOrientation="horizontal"
+      >
+        <div
+          *ngFor="let item of item.data; let i = index"
+          [ngClass]="item.selected?'card flow-card flow-card-selected':'card flow-card'"
+          [id]="item.id"
+          cdkDrag
+        >
+          <ng-template
+            *ngTemplateOutlet="recursiveListTmpl; context:{ $implicit: item };"
+          ></ng-template>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="card-footer text-right">
+    <a class="btn btn-sm btn-default" [routerLink]="['/home/flow/ctrl']">取消</a>
+    <button type="button" class="btn btn-sm btn-primary ml-2" (click)="confirm()">確認</button>
+  </div>
+</div>
+
+<!-- Return Modal HTML -->
+<ng-template #returnTemplate>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">指定退回</h4>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        (click)="modalRef.hide()"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label for="return-stage" class="col-md-3 col-form-label text-md-right">關卡</label>
+        <div class="col-md-8">
+          <ng-select [items]="returnOpts" [(ngModel)]="returnId"></ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="button" class="btn btn-sm btn-default" value="取消" (click)="modalRef.hide()" />
+      <input type="button" class="btn btn-sm btn-danger" value="刪除" (click)="deleteReturn()" />
+      <input type="button" class="btn btn-sm btn-primary" value="確認" (click)="returnConfirm()" />
+    </div>
+  </div>
+</ng-template>
+
+<!-- Edit Modal HTML -->
+<ng-template #template>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">新增關卡</h4>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        (click)="modalRef.hide()"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label for="stage" class="col-md-3 col-form-label text-md-right">關卡</label>
+        <div class="col-md-8">
+          <ng-select
+            [items]="stageOpts"
+            [(ngModel)]="stage"
+            [ngClass]="{ 'is-invalid': stage===null && added }"
+          ></ng-select>
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="stage" class="col-md-3 col-form-label text-md-right">限制條件</label>
+        <div class="col-md-8">
+          <ng-select [items]="flagList" [(ngModel)]="flag"></ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input
+        type="button"
+        class="btn btn-sm btn-default"
+        value="取消"
+        (click)="added=false; modalRef.hide()"
+      />
+      <input type="button" class="btn btn-sm btn-primary" value="確認" (click)="addItem()" />
+    </div>
+  </div>
+</ng-template>

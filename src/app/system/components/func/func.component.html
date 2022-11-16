@@ -1,0 +1,99 @@
+<div class="card">
+  <div class="card-body">
+    <div class="float-right" *ngIf="editable">
+      <button type="button" class="btn btn-sm btn-success" (click)="toAdd(); openModal(template)">
+        新增子選單
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-primary ml-2"
+        (click)="toEdit(); openModal(template)"
+      >
+        修改
+      </button>
+      <button
+        type="button"
+        [swal]="deleteSwal"
+        class="btn btn-sm btn-danger ml-2"
+        *ngIf="pid!==null"
+      >
+        刪除
+      </button>
+    </div>
+
+    <tree-root
+      #tree
+      [nodes]="nodes"
+      [options]="options"
+      [focused]="true"
+      (moveNode)="onMoveNode($event)"
+    >
+      <ng-template #treeNodeTemplate let-node="node" let-index="index">
+        {{ node.data.name }}
+      </ng-template>
+    </tree-root>
+  </div>
+</div>
+
+<swal
+  #deleteSwal
+  title="刪除後無法還原, 是否刪除?"
+  icon="warning"
+  confirmButtonText="刪除"
+  cancelButtonText="取消"
+  [reverseButtons]="true"
+  [showCancelButton]="true"
+  [focusCancel]="true"
+  (confirm)="del()"
+>
+</swal>
+
+<!-- Edit Modal HTML -->
+<ng-template #template>
+  <div class="modal-content">
+    <form [formGroup]="form">
+      <div class="modal-header">
+        <h4 class="modal-title">編輯選單</h4>
+        <button type="button" class="close" aria-hidden="true" (click)="modalRef.hide()">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>上層選單</label>
+          <div>
+            {{ f.parentFuncCname.value }}
+            <input type="hidden" class="form-control" formControlName="parentId" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>中文名稱</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="funcCname"
+            [ngClass]="f.funcCname.invalid | inputInvalid: submit"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+        <div class="form-group">
+          <label>英文名稱</label>
+          <input type="text" class="form-control" formControlName="funcEname" />
+        </div>
+        <div class="form-group">
+          <label>選單網址</label>
+          <input type="text" class="form-control" formControlName="funcUrl" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input
+          type="button"
+          class="btn btn-sm btn-default"
+          value="取消"
+          (click)="modalRef.hide();"
+        />
+        <input type="button" class="btn btn-sm btn-primary ml-2" value="確認" (click)="save()" />
+      </div>
+    </form>
+  </div>
+</ng-template>

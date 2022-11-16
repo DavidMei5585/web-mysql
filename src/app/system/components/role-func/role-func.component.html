@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="card-header">{{ roleName }} ({{ roleCode }})</div>
+
+  <div class="card-body">
+    <tree-root #tree [nodes]="nodes" [options]="options">
+      <ng-template #treeNodeTemplate let-node="node" let-index="index">
+        <input
+          type="checkbox"
+          [indeterminate]="node.data.indeterminate"
+          [checked]="node.data.checked"
+        />
+        {{ node.data.name }}
+      </ng-template>
+    </tree-root>
+  </div>
+
+  <div class="card-footer text-right">
+    <button type="button" class="btn btn-sm btn-default" [routerLink]="['/home/system/role']">
+      回上頁
+    </button>
+    <button type="button" class="btn btn-sm btn-primary ml-2" (click)="confirm()">確認</button>
+  </div>
+</div>

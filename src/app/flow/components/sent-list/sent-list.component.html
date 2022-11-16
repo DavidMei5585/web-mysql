@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-body">
+    <ngx-table
+      #table
+      [configuration]="configuration"
+      [data]="list"
+      [columns]="columns"
+      [pagination]="pagination"
+      (event)="eventEmitted($event)"
+    >
+      <ng-template let-row let-index="index">
+        <td>
+          <a href="javascript:;" class="text-primary" (click)="openModal(template, row)"
+            >{{ row.flowId }}</a
+          >
+        </td>
+        <td>
+          <a href="javascript:;" class="text-success" (click)="openModal(templateFlow, row)"
+            >{{ row.flowType | code: typeCodes }}</a
+          >
+        </td>
+        <td>{{ row.sentDate | taiwanDate: 'tYY/MM/DD HH:mm:ss' }}</td>
+        <td>
+          <div *ngFor="let f of row.flows">
+            {{ f.deptCode | code: deptCodes }} {{ f.titleCode }} {{ f.userCname }}
+          </div>
+        </td>
+        <td>{{ row.summary }}</td>
+        <td>{{ row.status | code: statusCodes }}</td>
+      </ng-template>
+    </ngx-table>
+  </div>
+</div>
+
+<ng-template #template>
+  <app-flow-detail
+    [todo]="todo"
+    [typeCodes]="typeCodes"
+    [deptCodes]="deptCodes"
+    [actionCodes]="actionCodes"
+    (hide)="modalRef.hide()"
+  ></app-flow-detail>
+</ng-template>
+
+<ng-template #templateFlow>
+  <app-flow-stage
+    [flowId]="todo.flowId"
+    [step]="todo.step"
+    (hide)="modalRef.hide()"
+  ></app-flow-stage>
+</ng-template>

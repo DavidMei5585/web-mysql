@@ -1,0 +1,61 @@
+.bug-icon {
+  transition: all 0.5s;
+  -webkit-font-smoothing: antialiased;
+  z-index: 1051;
+}
+
+.bug-icon:hover {
+  opacity: 0.8;
+}
+
+.bug-options {
+  display: inline-flex;
+  opacity: 0;
+  position: relative;
+  left: -40px;
+  transition: all 0.3s ease;
+  transform: scale(0);
+  transform-origin: 85% left;
+}
+
+.bug-icon:hover + .bug-options,
+.bug-options:hover {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.bug-options li {
+  display: block;
+  margin-left: 1px;
+}
+
+.remove-icon {
+  display: inline;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  border-radius: 10em;
+  padding: 2px 6px 3px;
+  text-decoration: none;
+  font: 700 21px/20px sans-serif;
+  background: #555;
+  border: 3px solid #fff;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  -webkit-transition: background 0.5s;
+  transition: background 0.5s;
+}
+.remove-icon:hover {
+  background: #e54e4e;
+  text-decoration: none;
+  padding: 3px 7px 5px;
+  top: -11px;
+  right: -11px;
+}
+.remove-icon:active {
+  background: #e54e4e;
+  text-decoration: none;
+  top: -10px;
+  right: -11px;
+}

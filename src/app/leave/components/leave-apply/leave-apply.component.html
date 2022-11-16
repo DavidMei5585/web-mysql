@@ -1,0 +1,133 @@
+<div class="card">
+  <div class="card-body">
+    <div class="form-horizontal" [formGroup]="form">
+      <div class="form-group row">
+        <label for="userId" class="col-md-4 col-form-label text-md-right">申請人</label>
+        <div class="col-md-6">
+          <p class="form-control-plaintext">
+            {{ form.controls.cname.value }} {{ form.controls.userId.value }}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="deptCode" class="col-md-4 col-form-label text-md-right">假別</label>
+        <div class="col-md-6">
+          <ng-select
+            [items]="types"
+            [ngClass]="form.controls.leaveType.invalid | inputInvalid: submit"
+            formControlName="leaveType"
+          ></ng-select>
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="startDate" class="col-md-4 col-form-label text-md-right">開始日期</label>
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="startDate"
+            [ngClass]="form.controls.startDate.invalid | inputInvalid: submit"
+            appDatepicker
+            (input)="getHours()"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+        <div class="col-md-3">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="startHour"
+              maxlength="2"
+              [ngClass]="f.startHour.invalid | inputInvalid: submit"
+            />
+            <div class="input-group-prepend input-group-append">
+              <div class="input-group-text">:</div>
+            </div>
+            <input
+              type="text"
+              class="form-control rounded-right"
+              formControlName="startMin"
+              maxlength="2"
+              [ngClass]="f.startMin.invalid | inputInvalid: submit"
+            />
+            <div class="invalid-feedback">此欄位必填</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="startDate" class="col-md-4 col-form-label text-md-right">結束日期</label>
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="endDate"
+            [ngClass]="form.controls.endDate.invalid | inputInvalid: submit"
+            appDatepicker
+            (input)="getHours()"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+        <div class="col-md-3">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="endHour"
+              maxlength="2"
+              [ngClass]="f.endHour.invalid | inputInvalid: submit"
+            />
+            <div class="input-group-prepend input-group-append">
+              <div class="input-group-text">:</div>
+            </div>
+            <input
+              type="text"
+              class="form-control rounded-right"
+              formControlName="endMin"
+              maxlength="2"
+              [ngClass]="f.endMin.invalid | inputInvalid: submit"
+            />
+            <div class="invalid-feedback">此欄位必填</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="hours" class="col-md-4 col-form-label text-md-right">時數</label>
+        <div class="col-md-6">
+          <p class="form-control-plaintext">{{ form.controls.hours.value | leaveDays }}</p>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="reason" class="col-md-4 col-form-label text-md-right">事由</label>
+        <div class="col-md-6">
+          <textarea class="form-control" formControlName="reason"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="reason" class="col-md-4 col-form-label text-md-right">附件</label>
+        <div class="col-md-6"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-right">
+    <button type="button" class="btn btn-sm mr-2" (click)="openModal(template)">流程</button>
+    <button type="button" class="btn btn-sm btn-primary" (click)="confirm()">送出</button>
+  </div>
+</div>
+
+<ng-template #template>
+  <app-flow-stage
+    [userId]="f.userId.value"
+    [flowType]="'001'"
+    [items]="items"
+    (hide)="modalRef.hide()"
+    (confirmModal)="confirmModal($event)"
+  ></app-flow-stage>
+</ng-template>

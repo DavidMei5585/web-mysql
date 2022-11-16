@@ -1,0 +1,113 @@
+<div class="hold-transition login-page">
+  <div>
+    <div class="login-logo">WYTN TPMS</div>
+    <!-- /.login-logo -->
+    <div class="card">
+      <div class="card-body">
+        <p class="text-center">請輸入帳號、密碼進行登入</p>
+
+        <form [formGroup]="form" (ngSubmit)="login()">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="userId"
+              #useridInput
+              [ngClass]="f.userId.invalid | inputInvalid: submit"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text rounded-right">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+            <div class="invalid-feedback">此欄位必填</div>
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              [ngClass]="f.password.invalid | inputInvalid: submit"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text rounded-right">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+            <div class="invalid-feedback">此欄位必填</div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="code"
+              [ngClass]="f.code.invalid | inputInvalid: submit"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text rounded-right">
+                <img alt="驗證碼" [attr.src]="imageCode.image" />
+              </div>
+            </div>
+            <div class="invalid-feedback">此欄位必填</div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block">登入</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+
+        <hr />
+
+        <div class="row">
+          <p class="col-6">
+            <a href="javascript:;" (click)="openModal(template)">忘記密碼</a>
+          </p>
+          <p class="col-6 text-right">
+            <a href="javascript:;" (click)="openModal(registerTemplate)">註冊</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Register Modal HTML -->
+<ng-template #registerTemplate>
+  <app-register [modalRef]="modalRef"></app-register>
+</ng-template>
+
+<!-- Reset PWD Modal HTML -->
+<ng-template #template>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">忘記密碼</h4>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        (click)="modalRef.hide()"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label for="return-stage" class="col-md-3 col-form-label text-md-right">使用者帳號</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" [(ngModel)]="userId" />
+        </div>
+      </div>
+
+      <h5 class="text-center text-success">系統將送出重設密碼信件，請依信件內容進行作業</h5>
+    </div>
+    <div class="modal-footer">
+      <input type="button" class="btn btn-sm btn-default" value="取消" (click)="modalRef.hide()" />
+      <input type="button" class="btn btn-sm btn-primary" value="送出" (click)="send()" />
+    </div>
+  </div>
+</ng-template>

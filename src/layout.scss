@@ -1,0 +1,88 @@
+$font-family: var(--font-family-sans-serif); //Microsoft JhengHei, sans-serif;
+$fonts: (
+  family: $font-family,
+  size: 1rem
+);
+
+html {
+  position: relative;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: map-get($fonts, family);
+  font-size: map-get($fonts, size);
+  line-height: 1.5;
+  text-align: left;
+}
+.navbar-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.navbar-logo-text {
+  font-size: 10px;
+  line-height: 12px;
+}
+
+/*circle div css*/
+.text-image {
+  padding-top: 2px;
+
+  /*width,height and border radius should be equal for circle*/
+  width: 32px;
+  height: 32px;
+  border-radius: 50px;
+
+  /*customize font size, weight,and font color below*/
+  font-size: 1.1rem;
+  font-family: inherit;
+  background-color: #999;
+  font-weight: bold;
+  color: #fff;
+
+  /*show text in uppercase*/
+  text-transform: uppercase;
+
+  /*Please dont change this until you don't want to display the text in middle of circle*/
+  text-align: center;
+  display: table;
+  text-decoration: none;
+}
+
+.content {
+  padding-top: 70px;
+  padding-bottom: 65px;
+}
+
+.login-info {
+  text-align: right;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}
+
+@media screen and (max-width: 576px) {
+  .login-info {
+    text-align: left;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar-brand {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px) {
+  .navbar-toggler {
+    margin-left: 15px;
+  }
+}

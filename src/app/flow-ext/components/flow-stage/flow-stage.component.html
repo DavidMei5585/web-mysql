@@ -1,0 +1,193 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">表單流程</h4>
+    <button type="button" class="close" aria-hidden="true" (click)="hideModal()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div class="pt-2 pb-2">
+      <button
+        class="btn btn-sm btn-warning mr-2"
+        (click)="this.items=[]; loadFlowStage()"
+        [hidden]="flowId"
+      >
+        重設流程
+      </button>
+      <button
+        class="btn btn-sm btn-danger mr-2"
+        [disabled]="!selectedItem || selectedItem.stageCode === '00' || isSelf"
+        tooltip=""
+        placement="top"
+        (click)="delItem()"
+      >
+        刪除關卡
+      </button>
+      <button
+        class="btn btn-sm btn-secondary mr-2"
+        [disabled]="!selectedItem || selectedItem.stageCode === '00'"
+        tooltip=""
+        placement="top"
+        (click)="openModal(returnTemplate, 'return')"
+      >
+        指定退回
+      </button>
+      <button
+        class="btn btn-sm btn-success mr-2"
+        [disabled]="!selectedItem || selectedItem.stageCode === '00' || isSelf"
+        tooltip=""
+        placement="top"
+        (click)="openModal(template, 'edit')"
+      >
+        編輯關卡
+      </button>
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        [disabled]="!selectedItem || selectedItem.stageCode === '00' || isSelf"
+        tooltip=""
+        placement="top"
+        (click)="openModal(template, 'add')"
+      >
+        新增關卡
+      </button>
+    </div>
+
+    <div
+      class="flow-container"
+      cdkDropList
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div
+        [ngClass]="item.stageCode === '00'?'card flow-card flow-card-disabled':(item.selected?'card flow-card flow-card-selected':'card flow-card')"
+        (click)="selectItem(item)"
+        *ngFor="let item of items"
+        [id]="item.id"
+        cdkDrag
+        [cdkDragDisabled]="item.stageCode === '00' || item.step <= step"
+      >
+        <div class="flow-icon shadow px-2 py-1">
+          <em
+            class="fas fa-user fa-2x"
+            [ngClass]="step === null ? 'text-info' : (step === item.step ? 'text-success' : (step > item.step ? 'text-secondary' : 'text-info') ) "
+          ></em>
+        </div>
+        <div class="card-body mt-3 text-nowrap text-center">
+          <div class="card-text">
+            {{ item.stageCode | code: stageCodes }}
+            <div *ngFor="let d of item.stages">
+              {{ d.deptCode | code: deptCodes }} <br />
+              {{ d.cname }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-sm" type="button" (click)="hideModal()">取消</button>
+    <button class="btn btn-sm btn-primary" type="button" (click)="confirm()">確認</button>
+  </div>
+</div>
+
+<!-- Edit Modal HTML -->
+<ng-template #template>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">編輯關卡</h4>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        (click)="modalRef.hide()"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="modal-body" [formGroup]="form">
+      <div class="card">
+        <div class="card-header">
+          <div class="form-group row">
+            <label for="orgCode" class="col-md-2 col-form-label text-md-right">組織</label>
+            <div class="col-md-9">
+              <ng-select
+                [items]="orgOpts"
+                formControlName="orgCode"
+                (change)="onSelect($event)"
+              ></ng-select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="deptCode" class="col-md-2 col-form-label text-md-right">單位</label>
+            <div class="col-md-9">
+              <ng-select
+                [items]="deptOpts"
+                formControlName="deptCode"
+                (change)="onSelectDept($event)"
+              ></ng-select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="stage" class="col-md-2 col-form-label text-md-right">人員</label>
+            <div class="col-md-9">
+              <ng-select
+                [items]="personOpts"
+                formControlName="userId"
+                [ngClass]="{ 'is-invalid' : false }"
+              ></ng-select>
+              <div class="invalid-feedback">此欄位必填</div>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="button" class="btn btn-sm btn-success" (click)="addStagePerson()">
+              新增
+            </button>
+          </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let d of editItem.stages">
+            {{ d.cname }}
+            <button class="btn btn-sm float-right" type="button" (click)="delStagePerson(d)">
+              <em class="fas fa-trash-alt text-danger"></em>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="button" class="btn btn-sm btn-default" value="取消" (click)="modalRef.hide()" />
+      <input type="button" class="btn btn-sm btn-primary" value="確認" (click)="editConfirm()" />
+    </div>
+  </div>
+</ng-template>
+
+<!-- Return Modal HTML -->
+<ng-template #returnTemplate>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">指定退回</h4>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        (click)="modalRef.hide()"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <label for="return-stage" class="col-md-3 col-form-label text-md-right">關卡</label>
+        <div class="col-md-8">
+          <ng-select [items]="returnOpts" [(ngModel)]="returnId"></ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="button" class="btn btn-sm btn-default" value="取消" (click)="modalRef.hide()" />
+      <input type="button" class="btn btn-sm btn-danger" value="刪除" (click)="deleteReturn()" />
+      <input type="button" class="btn btn-sm btn-primary" value="確認" (click)="returnConfirm()" />
+    </div>
+  </div>
+</ng-template>

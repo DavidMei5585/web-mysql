@@ -1,0 +1,43 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">表單明細</h4>
+    <button type="button" class="close" aria-hidden="true" (click)="hideModal()">&times;</button>
+  </div>
+  <div class="modal-body modal-body-scrollable">
+    <div class="form-group row mt-0 mb-0">
+      <label class="col-md-3 col-form-label">表單編號</label>
+      <p class="col-md-8 form-control-plaintext">{{ todo.flowId }}</p>
+    </div>
+
+    <ng-template appDynamicComponent></ng-template>
+
+    <table class="table table-border table-striped table-hover table-sm text-nowrap">
+      <thead>
+        <tr>
+          <th class="w-30">人員</th>
+          <th class="w-10">動作</th>
+          <th class="w-10">時間</th>
+          <th class="w-50">意見</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of records$ | async">
+          <td>{{ d.deptCode | code: deptCodes }} {{ d.cname }}</td>
+          <td>{{ d.action | code: actionCodes }}</td>
+          <td>{{ d.signDate | taiwanDate: 'tYY/MM/DD HH:mm:ss' }}</td>
+          <td>{{ d.opinion }}</td>
+        </tr>
+        <tr>
+          <td>
+            <div *ngFor="let d of current$ | async">
+              {{ d.deptCode | code: deptCodes }} {{ d.cname }}
+            </div>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

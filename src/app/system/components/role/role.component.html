@@ -1,0 +1,103 @@
+<div class="card">
+  <div class="card-body card-toolbar">
+    <button
+      class="btn btn-sm btn-success"
+      data-toggle="modal"
+      (click)="toAdd(); openModal(template)"
+    >
+      新增
+    </button>
+    <button class="btn btn-sm btn-secondary ml-2" (click)="download()">匯出</button>
+    <button class="btn btn-sm btn-secondary ml-2" (click)="downloadWithFunc()">匯出(含選單)</button>
+  </div>
+
+  <div class="card-body">
+    <ngx-table [configuration]="configuration" [data]="list" [columns]="columns">
+      <ng-template let-row let-index="index">
+        <td>{{ row.roleCode }}</td>
+        <td>{{ row.roleName }}</td>
+        <td class="text-nowrap">
+          <button
+            type="button"
+            class="btn btn-sm btn-info"
+            [routerLink]="['/home/system/role/func', row.id, row.roleCode, row.roleName]"
+          >
+            選單
+          </button>
+          <button
+            type="button"
+            data-target="#editModal"
+            class="btn btn-sm btn-primary ml-2"
+            data-toggle="modal"
+            (click)="toEdit(row.id); openModal(template)"
+          >
+            修改
+          </button>
+          <button type="button" class="btn btn-sm btn-danger ml-2" [swal]="deleteSwal">刪除</button>
+          <swal
+            #deleteSwal
+            title="刪除後無法還原, 是否刪除?"
+            icon="warning"
+            confirmButtonText="刪除"
+            cancelButtonText="取消"
+            [reverseButtons]="true"
+            [showCancelButton]="true"
+            [focusCancel]="true"
+            (confirm)="del(row.id)"
+          >
+          </swal>
+        </td>
+      </ng-template>
+    </ngx-table>
+  </div>
+</div>
+
+<!-- Edit Modal HTML -->
+<ng-template #template>
+  <div class="modal-content">
+    <form [formGroup]="form">
+      <div class="modal-header">
+        <h4 class="modal-title">編輯</h4>
+        <button
+          type="button"
+          class="close"
+          aria-hidden="true"
+          (click)="submit=false; modalRef.hide()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>角色代號</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="roleCode"
+            [ngClass]="f.roleCode.invalid | inputInvalid: submit"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+        <div class="form-group">
+          <label>角色名稱</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="roleName"
+            [ngClass]="f.roleName.invalid | inputInvalid: submit"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input
+          type="button"
+          class="btn btn-sm btn-default"
+          value="取消"
+          (click)="submit=false; modalRef.hide()"
+        />
+        <input type="button" class="btn btn-sm btn-primary" value="確認" (click)="save()" />
+      </div>
+    </form>
+  </div>
+</ng-template>

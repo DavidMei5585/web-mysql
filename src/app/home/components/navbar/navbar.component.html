@@ -1,0 +1,123 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top mb-2">
+  <div class="container">
+    <a routerLink="/home" class="navbar-brand">
+      <img src="assets/wiwynnlogo.png" alt="WYTN" class="d-inline-block align-top navbar-logo" />
+    </a>
+
+    <button
+      class="navbar-toggler order-1 order-md-1 mr-auto"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarCollapse"
+      aria-controls="navbarCollapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse order-4 order-md-1 mr-auto" id="navbarCollapse">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <ng-template #recursiveList let-list>
+          <ng-container *ngFor="let item of list">
+            <ng-container *ngIf="item.pid===rootId">
+              <li *ngIf="item.children.length===0">
+                <a class="nav-link" [routerLink]="item.url" appNavbarCollapse>{{item.cname}} </a>
+              </li>
+              <!-- menu bar -->
+              <li class="nav-item dropdown" *ngIf="item.children.length > 0">
+                <a
+                  attr.id="dropdownSubMenu{{ item.id }}"
+                  href="javascript:;"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  class="nav-link dropdown-toggle"
+                  >{{ item.cname }}</a
+                >
+                <ul
+                  attr.aria-labelledby="dropdownSubMenu{{ item.id }}"
+                  class="dropdown-menu border-0 shadow"
+                  *ngIf="item.children.length > 0"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"
+                  ></ng-container>
+                </ul>
+              </li>
+            </ng-container>
+
+            <ng-container *ngIf="item.pid!==rootId">
+              <!-- menu item -->
+              <li *ngIf="item.children.length===0">
+                <a class="dropdown-item" [routerLink]="item.url" appNavbarCollapse
+                  >{{item.cname}}
+                </a>
+              </li>
+              <!-- menu contain sub item -->
+              <li class="dropdown-submenu dropdown-hover" *ngIf="item.children.length > 0">
+                <a
+                  attr.id="dropdownSubMenu{{ item.id }}"
+                  href="javascript:;"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  class="dropdown-item dropdown-toggle"
+                  >{{ item.cname }}</a
+                >
+                <ul
+                  attr.aria-labelledby="dropdownSubMenu{{ item.id }}"
+                  class="dropdown-menu border-0 shadow"
+                  *ngIf="item.children.length > 0"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"
+                  ></ng-container>
+                </ul>
+              </li>
+            </ng-container>
+          </ng-container>
+        </ng-template>
+        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: list }"></ng-container>
+      </ul>
+    </div>
+
+    <!-- Right navbar links -->
+    <div class="nav-link dropdown order-3 order-md-3">
+      <!-- name circle -->
+      <a class="text-image" data-toggle="dropdown" href="javascript:;">{{ nameAbbr }}</a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li>
+          <a class="dropdown-item" routerLink="profile" appNavbarCollapse>
+            <em class="fas fa-user mr-2 text-gray-400"></em>
+            個人資訊
+          </a>
+        </li>
+        <li>
+          <div class="dropdown-divider"></div>
+        </li>
+        <li>
+          <a class="dropdown-item" href="javascript:;" [swal]="logoutSwal" appNavbarCollapse>
+            <em class="fas fa-sign-out-alt mr-2 text-gray-400"></em>
+            登出
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <swal
+      #logoutSwal
+      title="是否確認登出系統?"
+      icon="warning"
+      confirmButtonText="登出"
+      cancelButtonText="取消"
+      [reverseButtons]="true"
+      [showCancelButton]="true"
+      [focusCancel]="true"
+      (confirm)="logout()"
+    >
+    </swal>
+  </div>
+</nav>

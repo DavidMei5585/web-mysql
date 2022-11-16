@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-body">
+    <div class="form" [formGroup]="queryForm">
+      <div class="form-group row">
+        <label for="userId" class="col-md-3 col-form-label text-md-right">流程名稱</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" formControlName="type" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-right bg-transparent">
+    <button type="button" class="btn btn-sm btn-default ml-2">重設</button>
+    <button type="button" class="btn btn-sm btn-primary ml-2" (click)="search()">查詢</button>
+    <a class="btn btn-sm btn-success ml-2" routerLink="add">新增</a>
+  </div>
+</div>
+
+<div class="card mt-2" [hidden]="!submit">
+  <div class="card-body">
+    <ngx-table [configuration]="configuration" [data]="list" [columns]="columns">
+      <ng-template let-row let-index="index">
+        <td>{{ row.type }}</td>
+        <td>{{ row.type | code:typeCodes }}</td>
+        <td>
+          <span *ngFor="let s of row.stage; let i = index">
+            <em class="fas fa-arrow-right" [hidden]="i===0"></em>
+            {{ s.stageCode | code: stageCodes }}
+          </span>
+        </td>
+        <td>
+          <a class="btn btn-sm btn-primary" [routerLink]="['edit', row.type]"> 修改 </a>
+          <button type="button" class="btn btn-sm btn-danger ml-2" [swal]="deleteSwal">刪除</button>
+
+          <swal
+            #deleteSwal
+            title="刪除後無法還原, 是否刪除?"
+            icon="warning"
+            confirmButtonText="刪除"
+            cancelButtonText="取消"
+            [reverseButtons]="true"
+            [showCancelButton]="true"
+            [focusCancel]="true"
+            (confirm)="del(row.type)"
+          >
+          </swal>
+        </td>
+      </ng-template>
+    </ngx-table>
+  </div>
+</div>

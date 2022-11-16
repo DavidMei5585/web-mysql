@@ -1,0 +1,80 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">註冊</h4>
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      (click)="modalRef.hide()"
+    >
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="form-group row">
+        <label for="name" class="col-md-3 col-form-label text-md-right">帳號</label>
+        <div class="col-md-8">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="userId"
+            [ngClass]="f.userId.invalid | inputInvalid: submit"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="name" class="col-md-3 col-form-label text-md-right">密碼</label>
+        <div class="col-md-8">
+          <input
+            type="password"
+            class="form-control"
+            formControlName="password"
+            [ngClass]="f.password.invalid | inputInvalid: submit"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="email" class="col-md-3 col-form-label text-md-right">電子郵件</label>
+        <div class="col-md-8">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="email"
+            [ngClass]="f.email.invalid | inputInvalid: submit"
+          />
+          <div class="invalid-feedback" *ngIf="f.email.errors?.required">此欄位必填</div>
+          <div class="invalid-feedback" *ngIf="f.email.errors?.pattern">格式錯誤</div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="cname" class="col-md-3 col-form-label text-md-right">姓名</label>
+        <div class="col-md-8">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="cname"
+            [ngClass]="f.cname.invalid | inputInvalid: submit"
+          />
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <input
+      type="button"
+      class="btn btn-sm btn-default"
+      value="取消"
+      (click)="submit=false;modalRef.hide()"
+    />
+    <input type="button" class="btn btn-sm btn-primary" value="確認" (click)="save()" />
+  </div>
+</div>

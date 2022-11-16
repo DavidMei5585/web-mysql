@@ -1,0 +1,33 @@
+$colors: (
+  light: var(--light),
+  dark: var(--dark),
+  secondary: var(--secondary)
+);
+
+$bg-colors: (
+  light: var(--light),
+  dark: var(--dark),
+  secondary: var(--secondary)
+);
+
+@mixin dark-theme {
+  .footer {
+    color: map-get($colors, light);
+    background-color: map-get($bg-colors, dark);
+  }
+}
+
+@mixin light-theme {
+  .footer {
+    color: map-get($colors, dark);
+    background-color: map-get($bg-colors, light);
+  }
+}
+
+body.light-theme {
+  @include light-theme;
+}
+
+body.dark-theme {
+  @include dark-theme;
+}

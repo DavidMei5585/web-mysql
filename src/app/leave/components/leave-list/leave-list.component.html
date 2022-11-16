@@ -1,0 +1,52 @@
+<div class="card mt-2">
+  <div class="card-body p-0">
+    <div class="form-row m-3" [formGroup]="form">
+      <div class="form-group col-6">
+        <label class="col-form-label">假別</label>
+        <ng-select
+          [items]="typeOpts"
+          [ngClass]="form.controls.leaveType.invalid | inputInvalid: submit"
+          formControlName="leaveType"
+          (change)="search()"
+        ></ng-select>
+      </div>
+      <div class="form-group col-3">
+        <label class="col-form-label">起日</label>
+        <div class="form-input">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="startDate"
+            [ngClass]="form.controls.startDate.invalid | inputInvalid: submit"
+            appDatepicker
+            (input)="search()"
+          />
+        </div>
+      </div>
+      <div class="form-group col-3">
+        <label class="col-form-label">迄日</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="endDate"
+          [ngClass]="form.controls.endDate.invalid | inputInvalid: submit"
+          appDatepicker
+          (input)="search()"
+        />
+      </div>
+    </div>
+
+    <div class="column col-12 mt-2">
+      <ngx-table [configuration]="configuration" [data]="list" [columns]="columns">
+        <ng-template let-row let-index="index">
+          <td>{{ row.userId }}</td>
+          <td>{{ row.cname }}</td>
+          <td>{{ row.leaveType | code: types }}</td>
+          <td>{{ row.startDate | taiwanDate: 'tYY/MM/DD HH:mm' }}</td>
+          <td>{{ row.endDate | taiwanDate: 'tYY/MM/DD HH:mm' }}</td>
+          <td>{{ row.reason }}</td>
+        </ng-template>
+      </ngx-table>
+    </div>
+  </div>
+</div>

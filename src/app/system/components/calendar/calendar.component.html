@@ -1,0 +1,116 @@
+<div class="card">
+  <div class="card-body card-toolbar">
+    <button
+      class="btn btn-sm btn-success"
+      data-toggle="modal"
+      (click)="toAdd(); openModal(template)"
+    >
+      新增
+    </button>
+
+    <div class="form-row mt-2">
+      <div class="form-group col-6 mb-1">
+        <label for="name" class="form-label">年度</label>
+        <input class="form-control" [(ngModel)]="year" (input)="onYearSearch()" maxlength="3" />
+      </div>
+      <div class="form-group col-6 mb-1">
+        <label for="name" class="form-label">月份</label>
+        <input class="form-control" [(ngModel)]="month" (input)="onMonthSearch()" maxlength="2" />
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <ngx-table #table [configuration]="configuration" [data]="list" [columns]="columns">
+      <ng-template let-row let-index="index">
+        <td>{{ row.date | taiwanDate }}</td>
+        <td>{{ row.name }}</td>
+        <td>{{ row.isHoliday === 'Y' ? '是' : '否' }}</td>
+        <td>{{ row.description }}</td>
+        <td class="text-nowrap">
+          <button
+            type="button"
+            data-target="#editModal"
+            class="btn btn-sm btn-primary ml-2"
+            data-toggle="modal"
+            (click)="toEdit(row.id); openModal(template)"
+          >
+            修改
+          </button>
+          <button type="button" class="btn btn-sm btn-danger ml-2" [swal]="deleteSwal">刪除</button>
+          <swal
+            #deleteSwal
+            title="刪除後無法還原, 是否刪除?"
+            icon="warning"
+            confirmButtonText="刪除"
+            cancelButtonText="取消"
+            [reverseButtons]="true"
+            [showCancelButton]="true"
+            [focusCancel]="true"
+            (confirm)="del(row.id)"
+          >
+          </swal>
+        </td>
+      </ng-template>
+    </ngx-table>
+  </div>
+</div>
+
+<!-- Edit Modal HTML -->
+<ng-template #template>
+  <div class="modal-content">
+    <form [formGroup]="form">
+      <div class="modal-header">
+        <h4 class="modal-title">編輯</h4>
+        <button
+          type="button"
+          class="close"
+          aria-hidden="true"
+          (click)="submit=false; modalRef.hide()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>日期</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="date"
+            [ngClass]="f.date.invalid | inputInvalid: submit"
+            appDatepicker
+            [hidden]="form.controls.id.value"
+          />
+          <p class="form-control-plaintext" [hidden]="!form.controls.id.value">
+            {{ form.controls.date.value }}
+          </p>
+          <div class="invalid-feedback">此欄位必填</div>
+        </div>
+        <div class="form-group">
+          <label>節日名稱</label>
+          <input type="text" class="form-control" formControlName="name" />
+        </div>
+        <div class="form-group">
+          <label>是否為假日</label>
+          <select class="form-control" formControlName="isHoliday">
+            <option value="N">否</option>
+            <option value="Y">是</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>說明</label>
+          <input type="text" class="form-control" formControlName="description" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input
+          type="button"
+          class="btn btn-sm btn-default"
+          value="取消"
+          (click)="submit=false; modalRef.hide()"
+        />
+        <input type="button" class="btn btn-sm btn-primary" value="確認" (click)="save()" />
+      </div>
+    </form>
+  </div>
+</ng-template>

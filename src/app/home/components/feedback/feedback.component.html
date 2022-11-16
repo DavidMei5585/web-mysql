@@ -1,0 +1,71 @@
+<div class="d-inline" data-html2canvas-ignore="true">
+  <button class="btn btn-outline-secondary bug-icon">
+    <em class="fas fa-bug"></em>
+  </button>
+  <ul class="bug-options">
+    <li>
+      <button class="btn btn-outline-secondary" (click)="openModal(template)">
+        <em class="fas fa-pen"></em>
+      </button>
+    </li>
+    <li>
+      <button class="btn btn-outline-secondary" (click)="startCapture()">
+        <em class="fas fa-camera"></em>
+      </button>
+    </li>
+    <li>
+      <button class="btn btn-outline-secondary" (click)="startRecording()">
+        <em class="fas fa-video"></em>
+      </button>
+    </li>
+  </ul>
+</div>
+
+<!-- Register Modal HTML -->
+<ng-template #template>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">問題回饋</h4>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        (click)="modalRef.hide()"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="modal-body" [formGroup]="form">
+      <div class="row">
+        <ng-container formArrayName="files">
+          <div class="col-4" *ngFor="let row of files.controls; let i=index" [formGroupName]="i">
+            <div class="card mt-2 mb-2">
+              <video autoplay controls *ngIf="row.get('fileType')?.value==='webm'">
+                <source [src]="row.get('src')?.value" type="video/mp4" />
+              </video>
+              <img
+                alt=""
+                (click)="open(i)"
+                [src]="row.get('src')?.value"
+                *ngIf="row.get('fileType')?.value==='png'"
+              />
+              <a class="remove-icon" href="javascript:;" (click)="del(i)">&#215;</a>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="form-group row">
+        <label for="userId" class="col-md-12 col-form-label">問題描述</label>
+        <div class="col-md-12">
+          <textarea class="form-control"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-outline-danger" (click)="clear()">清空</button>
+      <button class="btn btn-sm btn-primary" (click)="save()">確認</button>
+    </div>
+  </div>
+</ng-template>

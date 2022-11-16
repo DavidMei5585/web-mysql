@@ -1,0 +1,65 @@
+@use 'sass:math';
+
+@import '~@circlon/angular-tree-component/css/angular-tree-component.css';
+@import '~ngx-easy-table/style.scss';
+@import '~@ng-select/ng-select/themes/default.theme.css';
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import './layout.scss';
+@import './theme.scss';
+
+@for $i from 1 to 100 {
+  .w-#{$i} {
+    width: percentage(math.div($i, 100)) !important;
+  }
+}
+
+.card-toolbar {
+  min-height: 75px;
+}
+
+.modal-body-scrollable {
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.line-z-index {
+  z-index: 1050;
+}
+
+// 覆寫 ngx-easy-table
+.ngx-table__table-no-results {
+  visibility: hidden;
+}
+.ngx-table__table-no-results:after {
+  content: '查無資料';
+  visibility: visible;
+}
+.ngx-table__header-title {
+  display: inline-flex;
+}
+.ngx-table,
+.ngx-pagination {
+  font-family: map-get($fonts, family);
+  font-size: map-get($fonts, size);
+}
+.ngx-table > thead {
+  background-color: #f2f2f2;
+}
+.ngx-form-checkbox > .ngx-form-icon {
+  border: solid #999 1px;
+}
+.ngx-form-checkbox > .ngx-form-icon.disabled {
+  background-color: #f2f2f2;
+  border: solid #ddd 1px;
+}
+
+// 覆寫 ng-select
+ng-select.ng-invalid.is-invalid .ng-select-container {
+  border-color: #dc3545 !important;
+}
+ng-select {
+  .ng-dropdown-panel {
+    width: auto !important;
+    min-width: 100%;
+  }
+}

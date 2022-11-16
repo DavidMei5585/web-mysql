@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="row justify-content-center align-items-center" style="height: 70vh">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">重設密碼</div>
+        <div class="card-body">
+          <div class="form" [formGroup]="form">
+            <div class="form-group row">
+              <label for="userId" class="col-md-3 col-form-label text-md-right">帳號</label>
+              <div class="col-md-8">
+                <p class="form-control-plaintext">{{ form.controls.userId.value }}</p>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="userId" class="col-md-3 col-form-label text-md-right">新密碼</label>
+              <div class="col-md-8">
+                <input
+                  type="password"
+                  class="form-control"
+                  formControlName="pwd"
+                  [ngClass]="f.pwd.invalid | inputInvalid: submit"
+                  (input)="comparePwd()"
+                />
+                <div class="invalid-feedback">此欄位必填</div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="userId" class="col-md-3 col-form-label text-md-right">確認密碼</label>
+              <div class="col-md-8">
+                <input
+                  type="password"
+                  class="form-control"
+                  formControlName="confirmPwd"
+                  [ngClass]="f.confirmPwd.invalid | inputInvalid: submit || notSame"
+                  (input)="comparePwd()"
+                />
+                <div class="invalid-feedback">{{ notSame ? '密碼未吻合' : '此欄位必填' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-right bg-transparent">
+          <button type="button" class="btn btn-sm btn-primary ml-2" (click)="confirm()">
+            確認
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

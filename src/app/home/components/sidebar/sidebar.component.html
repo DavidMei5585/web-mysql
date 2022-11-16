@@ -1,0 +1,40 @@
+<div class="sidebar">
+  <nav class="mt-2">
+    <ul
+      class="nav nav-pills nav-sidebar flex-column"
+      data-widget="treeview"
+      role="menu"
+      data-accordion="false"
+    >
+      <ng-template #recursiveList let-list>
+        <ng-container *ngFor="let item of list">
+          <!-- menu bar -->
+          <li class="nav-item has-treeview" *ngIf="item.children.length > 0">
+            <a href="javascript:;" class="nav-link">
+              <p>{{ item.cname }}</p>
+            </a>
+            <ul class="nav nav-treeview" *ngIf="item.children.length > 0">
+              <ng-container
+                *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"
+              ></ng-container>
+            </ul>
+          </li>
+          <!-- menu item -->
+          <li class="nav-item" *ngIf="item.children.length === 0">
+            <a class="nav-link" [routerLink]="item.url" appNavItem>
+              <p>{{item.cname}}</p>
+            </a>
+          </li>
+          <!-- menu contain sub item -->
+          <!-- <li class="nav-item"  *ngIf="item.pid != '0000' && item.children.length > 0">
+            <a attr.id="dropdownSubMenu{{ item.fid }}" href="javascript:;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">{{ item.cname }}</a>
+            <ul attr.aria-labelledby="dropdownSubMenu{{ item.fid }}" class="nav nav-treeview" *ngIf="item.children.length > 0">
+              <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"></ng-container>
+            </ul>
+          </li> -->
+        </ng-container>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: list }"></ng-container>
+    </ul>
+  </nav>
+</div>

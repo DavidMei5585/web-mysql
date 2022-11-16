@@ -1,0 +1,37 @@
+.flow-container {
+  margin-top: 40px;
+  display: flex;
+}
+
+.flow-icon {
+  position: absolute;
+  left: calc(50% - 25px);
+  top: -25px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: solid 1px #ddd;
+}
+
+.flow-card {
+  min-width: 120px;
+  min-height: 100px;
+  margin-right: 30px;
+  cursor: pointer;
+}
+
+.flow-card:hover {
+  background-color: #ddd;
+}
+
+.flow-card.flow-card-selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.flow-card.flow-card-disabled {
+  cursor: default;
+}
+
+.flow-card.flow-card-disabled:hover {
+  background-color: #fff;
+}

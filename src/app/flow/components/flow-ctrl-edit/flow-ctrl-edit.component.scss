@@ -1,0 +1,9 @@
+@import '../../flow.scss';
+
+.line-z-index {
+  z-index: 50;
+}
+
+.cdk-drag {
+  z-index: 51 !important;
+}

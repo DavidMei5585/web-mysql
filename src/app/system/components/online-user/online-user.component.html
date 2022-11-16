@@ -1,0 +1,26 @@
+<div class="card">
+  <div class="card-body">
+    <ngx-table [configuration]="configuration" [data]="list" [columns]="columns">
+      <ng-template let-row let-index="index">
+        <td>{{ row.userId }}</td>
+        <td>{{ row.cname }}</td>
+        <td>{{ row.loginDate | taiwanDate: 'tYY/MM/DD HH:mm:ss' }}</td>
+        <td class="text-nowrap">
+          <button type="button" class="btn btn-sm btn-danger ml-2" [swal]="deleteSwal">中斷</button>
+          <swal
+            #deleteSwal
+            title="是否確認中斷使用者?"
+            icon="warning"
+            confirmButtonText="中斷"
+            cancelButtonText="取消"
+            [reverseButtons]="true"
+            [showCancelButton]="true"
+            [focusCancel]="true"
+            (confirm)="del(row.id)"
+          >
+          </swal>
+        </td>
+      </ng-template>
+    </ngx-table>
+  </div>
+</div>

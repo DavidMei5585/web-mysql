@@ -1,0 +1,30 @@
+<a
+  href="javascript:;"
+  class="p-0 m-0 text-warning"
+  tooltip="操作教學"
+  (click)="openModal(template)"
+>
+  <em class="far fa-question-circle"></em>
+</a>
+<ng-template #template>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">操作教學<!--{{ name }}--></h4>
+
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        (click)="modalRef.hide()"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="modal-body modal-body-scrollable p-0">
+      <div class="m-2" *ngIf="noFile">尚無說明內容，如仍有疑問請洽管理人員</div>
+      <pdf-viewer [src]="pdfSrc" [original-size]="false" style="display: block; z-index: 1060">
+      </pdf-viewer>
+    </div>
+  </div>
+</ng-template>

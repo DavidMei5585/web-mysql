@@ -1,0 +1,17 @@
+自動登出：{{ timer$ | async }}
+<a href="javascript:;" tooltip="重設時間" [swal]="timerSwal">
+  <em class="fas fa-undo text-success"></em>
+</a>
+
+<swal
+  #timerSwal
+  title="是否重設自動登出時間?"
+  icon="warning"
+  confirmButtonText="重設"
+  cancelButtonText="取消"
+  [reverseButtons]="true"
+  [showCancelButton]="true"
+  [focusCancel]="true"
+  (confirm)="refreshToken()"
+>
+</swal>
